@@ -8,6 +8,7 @@ void renderPixel(
     int sampleNumber,
     int x, int y,
     int w, int h,
+    int maxDepth,
     Camera& camera,
 
     const std::vector<float3>& positions,

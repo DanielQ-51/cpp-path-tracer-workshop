@@ -10,6 +10,7 @@ void renderPixel(
     int sampleNumber,
     int x, int y,
     int w, int h,
+    int maxDepth,
     Camera& camera,
 
     const std::vector<float3>& positions,
@@ -17,5 +18,24 @@ void renderPixel(
     const std::vector<Triangle>& mesh,
     std::vector<float3>& image
 ) {
-    
+    int pixelIdx = y * w + x;
+
+    // To keep track of all the different light contributions that we have gotten
+    float3 colors_sum = f3(0.0f, 0.0f, 0.0f);
+
+    // --------------------------- Start Here! -----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+    image.at(pixelIdx) += colors_sum;
 }

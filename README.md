@@ -12,3 +12,8 @@ And use the following command to run:
 ```bash
 ./render.exe
 ```
+
+This is a workshop for implementing a very basic naive path tracer.
+
+Your task is to fill in the function renderPixel() in render.cpp.
+

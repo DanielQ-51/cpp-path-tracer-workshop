@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "render.h"
 #include "camera.h"
+#include "imageUtils.h"
 
 
 int main() {
@@ -34,7 +35,8 @@ int main() {
     readObjSimple("meshes/cornell_box_left_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
     readObjSimple("meshes/cornell_box_right_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
 
-    readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(12.0f, 12.0f, 8.0f));
+    readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(18.0f, 18.0f, 12.0f));
+    //readObjSimple("meshes/cornell_box_small_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(240.0f, 240.0f, 160.0f));
 
     
     printf("The scene has %d triangles\n", mesh.size());
@@ -46,7 +48,7 @@ int main() {
         #pragma omp parallel for collapse(2) schedule(dynamic, 16)
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
-                renderPixel(sample, x, y, w, h, camera, vertex_positions, vertex_normals, mesh, image);
+                renderPixel(sample, x, y, w, h, BOUNCE_DEPTH, camera, vertex_positions, vertex_normals, mesh, image);
             }
         }
 

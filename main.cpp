@@ -43,11 +43,15 @@ int main() {
     printf("Starting Render\n");
     for (int sample = 0; sample < NUM_SAMPLE; sample++) {
         
+        #pragma omp parallel for collapse(2) schedule(dynamic, 16)
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
                 renderPixel(sample, x, y, w, h, camera, vertex_positions, vertex_normals, mesh, image);
             }
         }
+
+        printf("\rProgress: [Sample %d / %d]", sample + 1, NUM_SAMPLE);
+        fflush(stdout);
 
         if ((sample + 1) % SAVE_INTERVAL == 0 || sample == NUM_SAMPLE - 1) {
             postProcessImage(image, outImageBuffer, w, h, sample);
@@ -58,6 +62,6 @@ int main() {
     auto currentTime = std::chrono::steady_clock::now();
     std::chrono::duration<double, std::milli> elapsed = currentTime - renderStartTime;
 
-    printf("Render finished in %f ms\n", elapsed.count());
+    printf("\n\nRender finished in %f ms\n", elapsed.count());
     return 0;
 }

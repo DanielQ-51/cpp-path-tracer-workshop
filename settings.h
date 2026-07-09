@@ -1,11 +1,11 @@
 #pragma once
 
 #ifndef WIDTH
-#define WIDTH 400
+#define WIDTH 800
 #endif
 
 #ifndef HEIGHT
-#define HEIGHT 400
+#define HEIGHT 800
 #endif
 
 #ifndef NUM_SAMPLE

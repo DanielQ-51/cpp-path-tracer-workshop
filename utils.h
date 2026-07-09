@@ -196,6 +196,8 @@ inline float3 gammaCorrect(float3 c)
 inline void postProcessImage(const std::vector<float3>& image, std::vector<unsigned char>& out, int w, int h, int sample)
 {
     std::vector<unsigned char> processed;
+    
+    #pragma omp parallel for schedule(static)
     for (int i = 0; i < w * h; i++)
     {   
         float3 averaged_color = image.at(i) / (float)(sample + 1);

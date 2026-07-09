@@ -213,7 +213,7 @@ inline void postProcessImage(const std::vector<float3>& image, std::vector<unsig
 inline void saveImage(const std::vector<unsigned char>& imageData, int w, int h, std::string name) {
     stbi_flip_vertically_on_write(true);
     int stride_in_bytes = w * 3;
-    int success = stbi_write_png("test_image.png", w, h, 3, imageData.data(), stride_in_bytes);
+    int success = stbi_write_png(name.c_str(), w, h, 3, imageData.data(), stride_in_bytes);
 
     if (!success) {
         std::cout << "Failed to write image.\n";

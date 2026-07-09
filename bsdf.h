@@ -3,6 +3,17 @@
 #include "utils.h"
 #include <random>
 
+/** * A function that handles diffuse (Lambertian) surface scattering by generating a random, 
+ * cosine-weighted reflection direction over the hemisphere and calculating its math weights.
+ * * Returns: nothing (void), but fills out the three output references passed into it.
+ * * Takes in:
+ * normal        : the surface normal at the hit point (automatically flipped if back-facing)
+ * color         : the material color used to determine surface reflectivity
+ * inDirection   : the world-space direction vector of the incoming ray hitting the surface
+ * out_direction : output reference populated with the newly sampled world-space bounce direction
+ * bsdf_val      : output reference populated with the evaluated BSDF color contribution (color / PI)
+ * pdf           : output reference populated with the probability density function value of the choice
+ * */
 void inline sampleBSDF(
     float3 normal,
     float3 color,

@@ -30,7 +30,6 @@ void renderPixel(
 
 
 
-
     
 
     image.at(pixelIdx) += colors_sum;

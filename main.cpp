@@ -1,0 +1,63 @@
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
+#include "settings.h"
+#include <iostream>
+#include <vector>
+#include <chrono>
+#include "utils.h"
+#include "render.h"
+#include "camera.h"
+
+
+int main() {
+    const int w = WIDTH;
+    const int h = HEIGHT;
+
+    std::vector<unsigned char> outImageBuffer(w * h * 3);
+    std::vector<float3> image(w * h);
+
+    Camera camera = Camera::Pinhole(
+        f3(CAMERA_X_POS, CAMERA_Y_POS, CAMERA_Z_POS), 
+        w, h, 
+        CAMERA_X_ROT, CAMERA_Y_ROT, CAMERA_Z_ROT, 
+        30.0f, // FOV (degrees)
+        1.0f // subpixel jitter (in terms of pixels)
+    );
+
+    std::vector<Triangle> mesh;
+    std::vector<float3> vertex_positions;
+    std::vector<float3> vertex_normals;
+    readObjSimple("meshes/cornell_box_no_walls.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
+    readObjSimple("meshes/cornell_box_left_wall.obj", vertex_positions, vertex_normals, mesh, f3(1.0f, 0.1f, 0.1f), f3(0.0f));
+    readObjSimple("meshes/cornell_box_right_wall.obj", vertex_positions, vertex_normals, mesh, f3(0.1f, 1.0f, 0.1f), f3(0.0f));
+    readObjSimple("meshes/cornell_box_left_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
+    readObjSimple("meshes/cornell_box_right_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
+
+    readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(12.0f, 12.0f, 4.0f));
+
+    
+    printf("The scene has %d triangles\n", mesh.size());
+    auto renderStartTime = std::chrono::steady_clock::now();
+
+    printf("Starting Render\n");
+    for (int sample = 0; sample < NUM_SAMPLE; sample++) {
+        
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                renderPixel(sample, x, y, w, h, camera, vertex_positions, vertex_normals, mesh, image);
+            }
+        }
+
+        if ((sample + 1) % SAVE_INTERVAL == 0 || sample == NUM_SAMPLE - 1) {
+            postProcessImage(image, outImageBuffer, w, h, sample);
+            saveImage(outImageBuffer, w, h, "render.png");
+        }
+    }
+
+    auto currentTime = std::chrono::steady_clock::now();
+    std::chrono::duration<double, std::milli> elapsed = currentTime - renderStartTime;
+
+    printf("Render finished in %f ms\n", elapsed.count());
+    return 0;
+}

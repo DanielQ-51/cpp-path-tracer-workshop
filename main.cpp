@@ -21,9 +21,9 @@ int main() {
     std::vector<float3> image(w * h);
 
     Camera camera = Camera::Pinhole(
-        f3(CAMERA_X_POS, CAMERA_Y_POS, CAMERA_Z_POS), 
-        w, h, 
-        CAMERA_X_ROT, CAMERA_Y_ROT, CAMERA_Z_ROT, 
+        f3(CAMERA_X_POS, CAMERA_Y_POS, CAMERA_Z_POS), // camera origin/position
+        w, h, // width and height of the image
+        CAMERA_X_ROT, CAMERA_Y_ROT, CAMERA_Z_ROT, // xyz rotations of the camera
         30.0f, // FOV (degrees)
         1.0f // subpixel jitter (in terms of pixels)
     );

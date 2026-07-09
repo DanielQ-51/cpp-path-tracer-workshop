@@ -43,3 +43,7 @@
 #ifndef CAMERA_Z_ROT
 #define CAMERA_Z_ROT 0.0f
 #endif
+
+#ifndef USE_BVH
+#define USE_BVH 0
+#endif

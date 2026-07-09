@@ -16,7 +16,9 @@ void renderPixel(
     const std::vector<float3>& positions,
     const std::vector<float3>& normals,
     const std::vector<Triangle>& mesh,
-    std::vector<float3>& image
+    std::vector<float3>& image, // write your output to this array
+
+    const BVH& bvh // Ignore this for now!
 ) {
     int pixelIdx = y * w + x;
 
@@ -29,8 +31,7 @@ void renderPixel(
 
 
 
-
-
+    
 
     image.at(pixelIdx) += colors_sum;
 }

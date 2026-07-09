@@ -9,6 +9,7 @@
 #include "render.h"
 #include "camera.h"
 #include "imageUtils.h"
+#include "softwareBVH.h"
 
 
 int main() {
@@ -41,6 +42,7 @@ int main() {
     readObjSimple("meshes/cornell_box_right_wall.obj", vertex_positions, vertex_normals, mesh, f3(0.1f, 1.0f, 0.1f), f3(0.0f));
     readObjSimple("meshes/cornell_box_left_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
     readObjSimple("meshes/cornell_box_right_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
+    readObjSimple("meshes/character.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
 
     readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(18.0f, 18.0f, 12.0f));
     //readObjSimple("meshes/cornell_box_small_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(240.0f, 240.0f, 160.0f));
@@ -48,6 +50,19 @@ int main() {
     // ----------------------------------------------------------------------------------------------------------------------
     
     printf("The scene has %d triangles\n", mesh.size());
+
+    // ---------------------------------- Building Acceleration Structure (Ignore this for now!) --------------------------------------------
+    
+    BVH bvh;
+    #if USE_BVH == 1
+    std::vector<float3> centroids;
+    std::vector<float3> aabbMins;
+    std::vector<float3> aabbMaxes;
+    computeInfoForBVH(vertex_positions, mesh, centroids, aabbMins, aabbMaxes, bvh.indices);
+
+    buildBVH(bvh, centroids, aabbMins, aabbMaxes, 0, bvh.indices.size(), 3);
+    #endif
+
     auto renderStartTime = std::chrono::steady_clock::now();
 
     printf("Starting Render\n");
@@ -56,7 +71,18 @@ int main() {
         #pragma omp parallel for collapse(2) schedule(dynamic, 16)
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
-                renderPixel(sample, x, y, w, h, BOUNCE_DEPTH, camera, vertex_positions, vertex_normals, mesh, image);
+                renderPixel(
+                    sample, 
+                    x, y, 
+                    w, h, 
+                    BOUNCE_DEPTH, 
+                    camera, 
+                    vertex_positions, 
+                    vertex_normals, 
+                    mesh, 
+                    image, 
+                    bvh // dont worry about this one for now
+                );
             }
         }
 

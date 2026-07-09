@@ -3,6 +3,7 @@
 #include <vector>
 #include "utils.h"
 #include "camera.h"
+#include "softwareBVH.h"
 
 void renderPixel(
     int sampleNumber,
@@ -14,5 +15,7 @@ void renderPixel(
     const std::vector<float3>& positions,
     const std::vector<float3>& normals,
     const std::vector<Triangle>& mesh,
-    std::vector<float3>& image
+    std::vector<float3>& image,
+
+    const BVH& bvh
 );

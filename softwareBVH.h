@@ -118,7 +118,7 @@ inline void SAH(
         int b = 0;
         if (extent > 0.0f) {
             b = static_cast<int>(numBuckets * (c - minC) / extent);
-            b = std::clamp(b, 0, numBuckets - 1);
+            b = clamp(b, 0, numBuckets - 1);
         }
         
         buckets[b].count++;

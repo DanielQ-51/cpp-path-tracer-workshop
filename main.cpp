@@ -42,7 +42,6 @@ int main() {
     readObjSimple("meshes/cornell_box_right_wall.obj", vertex_positions, vertex_normals, mesh, f3(0.1f, 1.0f, 0.1f), f3(0.0f));
     readObjSimple("meshes/cornell_box_left_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
     readObjSimple("meshes/cornell_box_right_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
-    readObjSimple("meshes/character.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
 
     readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(18.0f, 18.0f, 12.0f));
     //readObjSimple("meshes/cornell_box_small_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(240.0f, 240.0f, 160.0f));

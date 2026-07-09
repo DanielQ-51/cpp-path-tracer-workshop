@@ -62,10 +62,10 @@ struct Camera
         c.h = h;
 
         c.cameraOrigin = cameraOrigin;
-        c.fovScale = tanf((FOV * 0.5f) * (3.141592f / 180.0f));
-        c.xRot = xR * (3.14159265f / 180.0f);
-        c.yRot = yR * (3.14159265f / 180.0f);
-        c.zRot = zR * (3.14159265f / 180.0f);
+        c.fovScale = tanf((FOV * 0.5f) * (PI / 180.0f));
+        c.xRot = xR * (PI / 180.0f);
+        c.yRot = yR * (PI / 180.0f);
+        c.zRot = zR * (PI / 180.0f);
 
         c.aperture = 0.000001f;
         c.focalDist = 1.0f/FOV;

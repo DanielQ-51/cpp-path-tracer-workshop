@@ -15,7 +15,7 @@ constexpr float PI = 3.141592f;
 
 struct float3
 {
-    float x, y, z, w;
+    float x, y, z;
 };
 
 inline float3 make_float3(float x, float y, float z)

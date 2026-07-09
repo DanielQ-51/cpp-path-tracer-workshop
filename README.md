@@ -5,6 +5,8 @@ This is a workshop for implementing a very basic naive path tracer. Feel free to
 
 You should use traceClosestHit() in intersections.h, fetchGeometry() in intersections.h, sampleBSDF() in bsdf.h, and generateCameraRay() in camera.h. You can look them up in their respective files for their documentation.
 
+The way that this renderer works is by reading in .obj files that you tag with colors (albedo), and emission. You can use any obj file your heart desires, including the characters you've been working on! I would suggest importing the existing cornell box meshes to get the scale right. Then, its as simple as exporting as an obj and dragging into the codespace editor, into the meshes folder. Make sure that the file has normals!
+
 Good luck and have fun!
 
 Use the following command to compile:

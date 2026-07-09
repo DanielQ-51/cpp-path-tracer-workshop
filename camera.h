@@ -99,6 +99,16 @@ struct Camera
         return c;
     }
 
+    /**
+     * A function that converts 2D pixel coordinates into a 3D world-space ray shooting out from 
+     * the camera position, with optional random sub-pixel jittering to handle anti-aliasing.
+     * * Returns: a Ray object consisting of:
+     * float3 origin    : the starting position of the ray (the camera's location)
+     * float3 direction : the normalized world-space vector pointing through the target pixel
+     * * Takes in:
+     * x : the horizontal column index of the target pixel in the screen grid
+     * y : the vertical row index of the target pixel in the screen grid
+     */
     inline Ray generateCameraRay(int x, int y) const
     {
         Ray r;

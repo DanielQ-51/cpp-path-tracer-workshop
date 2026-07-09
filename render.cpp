@@ -23,19 +23,7 @@ void renderPixel(
     // To keep track of all the different light contributions that we have gotten
     float3 colors_sum = f3(0.0f, 0.0f, 0.0f);
 
-    // --------------------------- Start Here! -----------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
     image.at(pixelIdx) += colors_sum;
 }

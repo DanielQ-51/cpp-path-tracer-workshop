@@ -123,32 +123,3 @@ inline Intersection traceClosestHit (
 
     return closest_hit;
 }
-
-inline Intersection traceClosestHitIncomplete (
-    Ray r,
-    const std::vector<float3>& positions,
-    const std::vector<float3>& normals,
-    const std::vector<Triangle>& mesh
-) {
-    Intersection closest_hit;
-    closest_hit.isValid = false;
-    closest_hit.triangleIndex = -1;
-
-    float closest_t = 1e30f;
-
-    for (int i = 0; i < mesh.size(); ++i) {
-        float current_u = 0.0f;
-        float current_v = 0.0f;
-        float current_t = 0.0f;
-        bool intersectedTriangle; // Whether or not the triangle was actually hit by the ray
-
-        // TODO: use the triangleIntersect function 
-        // to fill out the values for current_u, current_v, current_t
-        
-
-        // TODO: If both the triangle is intersected, AND the current t is smaller
-        // than the closest one found so far, then update the closest one
-    }
-
-    return closest_hit;
-}

@@ -1,11 +1,11 @@
 #pragma once
 
 #ifndef WIDTH
-#define WIDTH 800
+#define WIDTH 300
 #endif
 
 #ifndef HEIGHT
-#define HEIGHT 800
+#define HEIGHT 300
 #endif
 
 #ifndef NUM_SAMPLE
@@ -17,7 +17,7 @@
 #endif
 
 #ifndef BOUNCE_DEPTH
-#define BOUNCE_DEPTH 10
+#define BOUNCE_DEPTH 6
 #endif
 
 #ifndef CAMERA_X_POS

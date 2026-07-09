@@ -28,13 +28,13 @@ int main() {
     std::vector<Triangle> mesh;
     std::vector<float3> vertex_positions;
     std::vector<float3> vertex_normals;
-    readObjSimple("meshes/cornell_box_no_walls.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
+    readObjSimple("meshes/cornell_box_no_walls.obj", vertex_positions, vertex_normals, mesh, f3(0.9f, 0.9f, 0.9f), f3(0.0f));
     readObjSimple("meshes/cornell_box_left_wall.obj", vertex_positions, vertex_normals, mesh, f3(1.0f, 0.1f, 0.1f), f3(0.0f));
     readObjSimple("meshes/cornell_box_right_wall.obj", vertex_positions, vertex_normals, mesh, f3(0.1f, 1.0f, 0.1f), f3(0.0f));
     readObjSimple("meshes/cornell_box_left_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
     readObjSimple("meshes/cornell_box_right_box.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(0.0f));
 
-    readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(12.0f, 12.0f, 4.0f));
+    readObjSimple("meshes/cornell_box_large_light.obj", vertex_positions, vertex_normals, mesh, f3(0.8f, 0.8f, 0.8f), f3(12.0f, 12.0f, 8.0f));
 
     
     printf("The scene has %d triangles\n", mesh.size());
@@ -62,6 +62,6 @@ int main() {
     auto currentTime = std::chrono::steady_clock::now();
     std::chrono::duration<double, std::milli> elapsed = currentTime - renderStartTime;
 
-    printf("\n\nRender finished in %f ms\n", elapsed.count());
+    printf("\nRender finished in %f ms\n", elapsed.count());
     return 0;
 }

@@ -18,3 +18,5 @@ And use the following command to run:
 ```bash
 ./render.exe
 ```
+
+Credit to the stb image header library for the image file IO used here. https://github.com/nothings/stb

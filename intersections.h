@@ -44,6 +44,7 @@ inline void fetchGeometry(
     out_color = tri.color;
     out_emission = tri.emission;
 }
+
 /**
  *  Returns true if the ray hits the triangle, and false otherwise.
  */

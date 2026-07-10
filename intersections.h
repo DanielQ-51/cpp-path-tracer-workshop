@@ -81,7 +81,8 @@ inline void fetchGeometry(
     float3& out_position,
     float3& out_normal,
     float3& out_color,
-    float3& out_emission
+    float3& out_emission,
+    int& materialID
 ) {
     if (!intersect.isValid || intersect.triangleIndex < 0) {
         return;
@@ -105,6 +106,7 @@ inline void fetchGeometry(
 
     out_color = tri.color;
     out_emission = tri.emission;
+    materialID = tri.type;
 }
 
 /** 

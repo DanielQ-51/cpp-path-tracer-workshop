@@ -135,6 +135,13 @@ inline float3 clampf3(float3 v, float minVal, float maxVal) {
     );
 }
 
+enum MaterialType {
+    TYPE_DIFFUSE = 0,
+    TYPE_DIELECTRIC = 1,
+    TYPE_ROUGH_METAL = 2,
+    TYPE_SHINY_METAL = 3,
+};
+
 struct Triangle
 {
     int aInd, bInd, cInd;
@@ -143,10 +150,15 @@ struct Triangle
     float3 emission;
     float3 color;
 
+    int type;
+
     Triangle() {}
 
     Triangle(int a, int b, int c, int na, int nb, int nc, float3 col, float3 e)
         : aInd(a), bInd(b), cInd(c), naInd(na), nbInd(nb), ncInd(nc), color(col), emission(e) {}
+    
+    Triangle(int a, int b, int c, int na, int nb, int nc, float3 col, float3 e, int t)
+        : aInd(a), bInd(b), cInd(c), naInd(na), nbInd(nb), ncInd(nc), color(col), emission(e), type(t) {}
 };
 
 
@@ -155,7 +167,8 @@ inline void readObjSimple(
     std::vector<float3>& points, 
     std::vector<float3>& normals,
     std::vector<Triangle>& mesh, 
-    float3 c, float3 e
+    float3 c, float3 e,
+    int type
 )
 {
     std::ifstream file(filename);
@@ -262,9 +275,9 @@ inline void readObjSimple(
 
                 Triangle tri;
                 if (isLight)
-                    tri = Triangle(idx0, idx1, idx2, n_idx0, n_idx1, n_idx2, c, e);
+                    tri = Triangle(idx0, idx1, idx2, n_idx0, n_idx1, n_idx2, c, e, type);
                 else
-                    tri = Triangle(idx0, idx1, idx2, n_idx0, n_idx1, n_idx2, c, f3());
+                    tri = Triangle(idx0, idx1, idx2, n_idx0, n_idx1, n_idx2, c, f3(), type);
                 mesh.push_back(tri);
             }
         }

@@ -9,7 +9,7 @@
 #endif
 
 #ifndef NUM_SAMPLE
-#define NUM_SAMPLE 500
+#define NUM_SAMPLE 5000
 #endif
 
 #ifndef SAVE_INTERVAL

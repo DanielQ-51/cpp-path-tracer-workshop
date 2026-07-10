@@ -1,7 +1,23 @@
 #pragma once
 
 #include "utils.h"
+#include "settings.h"
+#include <random>
+#include <algorithm>
+#include <cmath>
 
+#define PI 3.14159265359f
+
+// ---------------------- Thread-Safe RNG ----------------------
+inline float randf() {
+    // thread_local ensures each OpenMP thread gets its own independent random state
+    thread_local std::mt19937 generator(std::random_device{}());
+    std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
+    return distribution(generator);
+}
+
+// ---------------------- Tangent Space Helpers ----------------------
+// Builds a local coordinate system around the normal
 inline void createCoordinateSystem(const float3& N, float3& Nt, float3& Nb) {
     if (std::abs(N.x) > std::abs(N.y))
         Nt = normalize(f3(N.z, 0.0f, -N.x));
@@ -31,6 +47,7 @@ inline float D_GGX(const float3& h, float alpha) {
     return alpha2 / (PI * denom * denom);
 }
 
+// The exact analytical Smith GGX masking function
 inline float G1_GGX(const float3& v, float alpha) {
     float cosTheta = v.z;
     if (cosTheta <= 0.0f) return 0.0f;
@@ -49,8 +66,23 @@ inline float3 Fresnel_Schlick(float cosTheta, const float3& F0) {
     float p5 = std::pow(1.0f - c, 5.0f);
     return F0 + (f3(1.0f, 1.0f, 1.0f) - F0) * p5;
 }
+
 // ---------------------- Core BSDF Sampler ----------------------
 
+/** 
+ * A function that evaluates the material properties of a surface and generates a new bounce direction.
+ * 
+ * Returns: nothing (void), but fills out the output references passed into it.
+ * 
+ * Takes in:
+ * materialType : the integer identifier for the material (0=Diffuse, 1=Dielectric, etc.)
+ * normal       : the geometric normal of the intersected surface
+ * color        : the diffuse color or F0 reflectance of the material
+ * inDirection  : the direction of the ray arriving at the surface
+ * outDirection : output reference populated with the new randomly sampled bounce direction
+ * bsdf_value   : output reference populated with the evaluated BSDF weight for this bounce
+ * pdf          : output reference populated with the probability density of the chosen direction
+ */
 inline void sampleBSDF(
     int materialType,
     const float3& normal,
@@ -82,8 +114,8 @@ inline void sampleBSDF(
         // ------------------ MATTE / LAMBERTIAN ------------------
         case TYPE_DIFFUSE: 
         {
-            float r1 = randomFloat();
-            float r2 = randomFloat();
+            float r1 = randf();
+            float r2 = randf();
             float phi = 2.0f * PI * r1;
             
             float x = std::cos(phi) * std::sqrt(r2);
@@ -105,8 +137,8 @@ inline void sampleBSDF(
             float roughness = (materialType == TYPE_SHINY_METAL) ? 0.05f : 0.35f;
             float alpha = roughness * roughness;
             
-            float r1 = randomFloat();
-            float r2 = randomFloat();
+            float r1 = randf();
+            float r2 = randf();
             float phi = 2.0f * PI * r1;
             
             // Sample microfacet normal (h)
@@ -149,16 +181,25 @@ inline void sampleBSDF(
             float cosI = std::abs(wi.z);
             float eta = etaI / etaT;
             float sin2_t = eta * eta * (1.0f - cosI * cosI);
-            
             float R0 = (etaI - etaT) / (etaI + etaT);
+            
             R0 = R0 * R0;
-            float F = R0 + (1.0f - R0) * std::pow(1.0f - cosI, 5.0f);
             
             // Total Internal Reflection check
-            if (sin2_t > 1.0f) F = 1.0f;
+            float F;
+            if (sin2_t > 1.0f) {
+                F = 1.0f;
+            } else {
+                // Use cosT instead of cosI when exiting the medium
+                float cosForSchlick = cosI;
+                if (etaI > etaT) {
+                    cosForSchlick = std::sqrt(1.0f - sin2_t);
+                }
+                F = R0 + (1.0f - R0) * std::pow(1.0f - cosForSchlick, 5.0f);
+            }
 
             // Russian Roulette: Randomly choose to Reflect OR Refract based on Fresnel Probability
-            if (randomFloat() < F) {
+            if (randf() < F) {
                 // Reflect
                 float3 wo = f3(-wi.x, -wi.y, wi.z);
                 outDirection = localToWorld(wo, Nt, Nb, normal);

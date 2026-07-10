@@ -27,6 +27,7 @@ void renderPixel(
 
     // ---------------------- Begin your code below --------------------------------
 
+
     
 
     image.at(pixelIdx) += colors_sum;

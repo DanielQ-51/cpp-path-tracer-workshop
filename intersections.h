@@ -138,7 +138,7 @@ inline Intersection traceClosestHit (
 
     float closest_t = 1e30f;
 
-    for (size_t i = 0; i < mesh.size(); ++i) {
+    for (int i = 0; i < mesh.size(); ++i) {
         float current_u = 0.0f;
         float current_v = 0.0f;
         float current_t = 0.0f;
